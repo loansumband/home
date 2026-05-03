@@ -1,35 +1,64 @@
 <!DOCTYPE html>
 <html>
     <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <img src="images/SPACAMEB.BMP" style="position:absolute;top:700px;right:-250px;width:500px">
-    <img src="images/SPACAMEB.BMP" style="position:absolute;top:700px;left:-250px;width:500px">
-    <img src="images/FLORAL5.BMP">
+    <img src="images/SPACAMEB.BMP" style="position:absolute;top:700px;right:min(30%, -250px);width:min(60%, 500px)">
+    <img src="images/SPACAMEB.BMP" style="position:absolute;top:700px;left:min(30%, -250px);width:min(60%, 500px)">
+    <img src="images/FLORAL5.BMP" width="100%">
     <h1>
         <p id="title"><img src="images\54\CAP2\L.GIF" width="200"><img src="images\55\LOW2\O.GIF" width="100"><img src="images\55\LOW2\A.GIF" width="100"><img src="images\55\LOW2\N.GIF" width="100"><img src="images\55\LOW2\S.GIF" width="100"><img src="images\55\LOW2\U.GIF" width="100"><img src="images\55\LOW2\M.GIF" width="100"></p>
     </h1>
     <div id="menu">
-        
-        
-    <br>
-        <p><img src="images\wel.gif"> to loansum</p>
-        <h3>Contact Us!
-            <img src="images\snailcontact.gif">
-        </h3>
-        <div class="links">
+        <div class="boot">
+            <img id="bootl" src="images\48.GIF" >
+            <div>
+                <div>
+                    <img src="images\wel.gif"> to loansum
+                </div>
+                <a href="mailto:loansumband@gmail.com?subject=URGENT&amp;body=Hi! I clicked on a snail! Help! ">   
+                    <h3>Contact Us!
+                        <img src="images\snailcontact.gif">
+                    </h3>
+                </a>
+            </div>
+            <img id="bootr" src="images/pngtree-western-boots-png-image_11245654-453980518.png">
+        </div>
+
+        <div class="links">                
             <a href="https://www.youtube.com/@LoanSumBand">
                 <img src="images/youtube(2).png" width="100px">
                 youtube
             </a>
-            <a href="mailto:nicholas.heinen@gmail.com?subject=Add to Mailing List&amp;body=Hello, I'd like to be added to the mailing list!">    
+            <a href="mailto:loansumband@gmail.com?subject=Show??&amp;body=Hello, I request a show right now at this instant, please fulfill my request, thank you. ">    
                 <img src="images\mail122.gif" width="200px">
                 email
             </a>
-            <a href="https://youtu.be/1nyTBsazS-4?si=-BnMjNl-oK2-hWjj">???</a>
+            <a href="https://forms.gle/gnU1boXk8vm25Gh17">
+                <img src="images/maileat.gif">
+                Join our mailing list!</a>
         </div>
         
+    </div>
+    <img src="images/WORLDCLR.GIF">
+    
+    <div class="poster_board" >
+        <h1>
+            <img src="images/shows.gif">
+            SHOWS
+        </h1>
+        <img class="posters" src="images/posters/blackforest.jpeg" class="movable">
+        <img class="posters" src="images/posters/klash.jpeg" class="movable">
+        <img class="posters" src="images/posters/memory.jpg" class="movable">
+        
+        <img class="posters" src="images/posters/dow.jpeg" class="movable">
+        <img class="posters" src="images/posters/pillar.jpg" class="movable">
+        <img class="posters" src="images/posters/acadia.jpg" class="movable">
+        <img class="posters" src="images/posters/eagles.png" class="movable">
+        
+
     </div>
     <div class="scrap">
         <img src="images\DEVLSTWR.BMP" style='left:0px;top:0px' class="movable">
@@ -41,13 +70,22 @@
         <img src="images/DRAGFLY2.BMP" style='left:-266px;top:-265px' class="movable">
         <img src="images\HDAVID.BMP" style='left:966px;top:70px;width:350px' class="movable">
         <img src="images/THEMONTN.BMP" style='left:-161px;top:514px;width:400px' class="movable">
-        <img src="images/YELLWLDY.BMP" style='left:-20px;top:-411px;width:200px;' class="movable">
-        <img src="images/WORLDCLR.GIF" style='left:0px;top:726px; width:70%' class="movable">
+        <img src="images/YELLWLDY.BMP" style="left: 10px; top: 170px; width: 200px;" class="movable">
+    </div>
+    <div>
+        ignore this text below I'm tryna game google search engine hegemony
+        loans, loansum, loansome, loan, band, music, minneapolis, twin cities, country, folk, very cool
+    </div>
+    <p>Search for your fish</p>
+    <input onchange="searchUpdate(e)" id="search" value="my fish name">
+    <p>Add your email to the mailing list to get a fish on here!</p>
+    <div id="water">
+        <canvas id="p5cavnas"></canvas>
     </div>
     
-    <img src="images\48.GIF" style="position:absolute; top:400px; left:20px">
-    <img style="position:absolute; right:20px; top:400px" width="300px" src="images/pngtree-western-boots-png-image_11245654-453980518.png">
 
 </body>
 <script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.min.js"></script>
+<script src="flock.js"></script>
 </html>

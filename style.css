@@ -12,10 +12,16 @@ h1 {
     font-size: 100px;
     text-align: center;
     width: 100%;
+    margin:0px;
+    padding:0px;
+}
+h1>p{
+    margin:0px;
 }
 
 .links{
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
     align-items: flex-end;
@@ -27,6 +33,21 @@ a {
     flex-direction: column;
 }
 
+.boot{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#bootl, #bootr{
+    height: min(40vw, 300px);
+}
+#bootl{
+    transform: rotate(-50deg);
+}
+#bootr{
+    transform: rotate(20deg);
+}
 .wrap{
     margin: auto;
     align-items: center;
@@ -39,9 +60,19 @@ a {
     margin: auto;
     display: block;
 }
+
+.poster_board{
+    margin-top: 20em;
+}
+
+.posters{
+    height: 50vh;
+    mix-blend-mode: normal;
+}
+
 .scrap{
-    position: relative;
-    left: 15%;
+    position:relative;
+    display: none;
 }
 .scrap>img{
     mix-blend-mode: normal;
@@ -57,6 +88,20 @@ a {
     margin:auto;
 }
 
+#water{
+    background-image: url("images/water.jpg");
+    width: 100%;
+    height:100%;
+}
+
+
 img{
     mix-blend-mode: multiply;
+}
+
+@media only screen and (orientation: portrait) {   
+    #title>img{
+        width:0.8em;
+        margin:-0.2em;
+    }
 }
