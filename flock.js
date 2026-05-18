@@ -1,16 +1,24 @@
 let flock;
 let food;
+let scale = 1;
+
 let search = "gggg"
 let names = ["kat", "nicholas", "dan", "kairos", "neil", "anonymous fish"]
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight, document.getElementsByTagName("canvas")[0]);
-
+  // pixelDensity(0.5)
   flock = new Flock();
+  noiseSeed(1);
+
 
   // Add an initial set of boids into the system
-  for (let i = 0; i < 50; i++) {
-    let b = new Boid(random(0, width), random(0, height), names[min(names.length - 1, i)]);
+  for (let i = 0; i < 100; i++) {
+    let n = names[i]
+    if (i >= names.length){
+      n = names[names.length - 1] + i
+    }
+    let b = new Boid(random(0, width), random(0, height), n);
     flock.addBoid(b);
   }
 
@@ -50,21 +58,108 @@ class Flock {
   }
 }
 
+function drawFish(currhash, size, position, theta){
+  let a = createVector(0.3+ noise(currhash - 600)/10 - 0.1, 0.8 + noise(currhash + 600)/2 - 0.5) // head size
+  let b = createVector(0.6 + noise(currhash - 100)/2 - 0.5, 0.5 + noise(currhash + 100)/2 - 0.5) 
+  let c = createVector(1 + noise(currhash - 400)/2 - 0.5, 1.1 + noise(currhash + 400) - 0.5) // fin width
+  let d = createVector(0.9 + noise(currhash - 200) - 0.5, 1.6 +  noise(currhash + 200) - 0.5) // fin
+  let e = createVector(0.36, 1.3)
+  let f = createVector(noise(currhash - 100)/4, 2) // tail connect
+  let g = createVector(0.33, 2.4 + noise(currhash - 1000)/2 - 0.25) 
+  let h = createVector(0, 2.3 + noise(currhash - 200)/2 - 0.25)// tail split
+  let j = createVector(1.05 - noise(currhash + 9000)/10, 1.4 - noise(currhash + 9000)*0.8)
+  push();
+    translate(position.x,position.y);
+    rotate(theta);
+  
+    beginShape();
+    vertex(0, -size);
+    vertex(-size * a.x * j.x, -size * a.y * j.y)
+    vertex(-size * b.x * j.x, -size * b.y * j.y);
+  
+    vertex(-size/2, size/2);
+  
+    vertex(-size * c.x * j.x, size * c.y * j.y)
+    vertex(-size * d.x * j.x, size * d.y * j.y)
+    vertex(-size * e.x * j.x, size * e.y * j.y);
+    vertex(-size * f.x * j.x, size * f.y * j.y);
+  
+    vertex(-size * g.x * j.x, size * g.y * j.y);
+    vertex(size * h.x * j.x, size * h.y * j.y);
+    vertex(size * g.x * j.x, size * g.y * j.y);
+  
+    vertex(size * f.x * j.x, size * f.y * j.y);
+    vertex(size * e.x * j.x, size * e.y * j.y);
+    vertex(size * d.x * j.x, size * d.y * j.y)
+    vertex(size * c.x * j.x, size * c.y * j.y)
+  
+    vertex(size/2, size/2);
+  
+    vertex(size * b.x * j.x,-size * b.y * j.y);
+    vertex(size * a.x * j.x, -size * a.y * j.y)
+    vertex(0, -size);
+    endShape(CLOSE);
+    
+    strokeWeight(0);
+    fill(noise(currhash + 1)*255, noise(2000 * currhash + 1)*255, noise(1000* currhash + 1)*255);
+    beginShape();
+    vertex(-size/2, size/2);
+    vertex(-size * c.x * j.x, size * c.y * j.y)
+    vertex(size * c.x * j.x, size * c.y * j.y)
+    vertex(size/2, size/2);
+    endShape(CLOSE);
+  
+    beginShape();
+    vertex(-size * a.x * j.x, -size * a.y * j.y)
+    vertex(-size * b.x * j.x, -size * b.y * j.y);
+  
+    vertex(size * b.x * j.x,-size * b.y * j.y);
+    vertex(size * a.x * j.x, -size * a.y * j.y)
+    endShape(CLOSE);
+  
+    beginShape();
+    vertex(-size * f.x * j.x, size * f.y * j.y);
+    vertex(-size * g.x * j.x, size * g.y * j.y);
+    vertex(size * h.x * j.x, size * h.y * j.y);
+    vertex(size * g.x * j.x, size * g.y * j.y);
+    vertex(size * f.x * j.x, size * f.y * j.y);
+    endShape(CLOSE);
+  pop()
+}
+
+function newhash(name){
+  let hash = TWO_PI;
+  for(let i = 0; i < name.length; i++){
+
+    hash = hash + name.charCodeAt(i)
+    hash = hash * name.charCodeAt(i)
+    while (hash > 1000000000000){
+      hash = hash / 10
+    }
+  }
+  return round(hash)
+}
+
+
 class Boid {
   constructor(x, y, name) {
     this.acceleration = createVector(0, 0);
     this.velocity = createVector(random(-1, 1), random(-1, 1));
     this.position = createVector(x, y);
-    this.size = 6.0;
-	this.name = name
+    this.size = 6.0 * scale;
+	  this.name = name
+    this.hash = newhash(name)
 
     // Maximum speed
-    this.maxSpeed = 3;
+    this.maxSpeed = 3  * scale;
 
     // Maximum steering force
-    this.maxForce = 0.05;
+    this.maxForce = 0.05  / scale;
     colorMode(HSB);
-    this.color = color(random(256), 255, 255);
+    randomSeed(this.hash)
+    lightness = random(256)
+    randomSeed(this.hash + 1000)
+    this.color = color(random(256), 255, lightness);
   }
 
   run(boids) {
@@ -90,6 +185,11 @@ class Boid {
     alignment.mult(1.0);
     cohesion.mult(1.0);
 
+    
+    // consciousness .... 
+    if(noise(this.hash + Date.now() / 1000) < 0.3){
+      return
+    }
     // Add the force vectors to acceleration
     this.applyForce(separation);
     this.applyForce(alignment);
@@ -100,10 +200,6 @@ class Boid {
   update() {
     // Update velocity
     this.velocity.add(this.acceleration);
-	// consciousness .... 
-	if(noise(10000* this.name.charCodeAt(0) * this.name.charCodeAt(1) + Date.now() / 1000) < 0.3){
-		this.velocity.mag(0)
-	}
     // Limit speed
     this.velocity.limit(this.maxSpeed);
     this.position.add(this.velocity);
@@ -125,7 +221,7 @@ class Boid {
 
     // Normalize desired and scale to maximum speed
     desired.normalize();
-	let maxSpeed = this.maxSpeed * noise(10000* this.name.charCodeAt(0) * this.name.charCodeAt(1) + Date.now() / 1000)
+	let maxSpeed = this.maxSpeed * noise(this.hash  + Date.now() / 1000)
     desired.mult(maxSpeed);
 
     // Steering = Desired minus Velocity
@@ -138,43 +234,45 @@ class Boid {
 
   render() {
     // Draw a triangle rotated in the direction of velocity
-    let theta = this.velocity.heading() + radians(90) + radians(10) * Math.sin(this.velocity.mag() * Date.now() / 50);
+    let theta = this.velocity.heading() + radians(90) + radians(10) * Math.sin((1 + this.velocity.mag() / 6) * Date.now() / 50 / scale);
     fill(this.color);
     stroke(255);
-    push();
-	
-    translate(this.position.x, this.position.y);
-    rotate(theta);
 
-	beginShape();
-	vertex(0, -this.size);
-	vertex(-this.size * 0.25, -this.size * 0.6)
-	vertex(-this.size * 0.3,-this.size * 0.5);
+    drawFish(this.hash, this.size, this.position, theta)
+    // push();
+	
+    // translate(this.position.x, this.position.y);
+    // rotate(theta);
 
-	vertex(-this.size/2, this.size/2);
-	
-	vertex(-this.size * 0.5, 1.1 * this.size)
-	vertex(-this.size * 0.7, 1.6 * this.size)
-	vertex(-this.size * 0.36, 1.3 * this.size);
-	vertex(0, 2 * this.size);
-	
-	vertex(-this.size/3, 2.4 * this.size);
-	vertex(this.size/3, 2.4 * this.size);
-	
-	vertex(0, 2 * this.size);
-	
-	vertex(this.size * 0.36, 1.3 * this.size);
-	vertex(this.size * 0.7, 1.6 * this.size)
-	vertex(this.size * 0.5, 1.1 * this.size)
-	
-	vertex(this.size/2, this.size/2);
-	
-	vertex(this.size * 0.3,-this.size * 0.5);
-	vertex(this.size * 0.25, -this.size * 0.6)
-	vertex(0, -this.size);
+    // beginShape();
+    // vertex(0, -this.size);
+    // vertex(-this.size * 0.25, -this.size * 0.6)
+    // vertex(-this.size * 0.3,-this.size * 0.5);
 
-	endShape(CLOSE);
-    pop();
+    // vertex(-this.size/2, this.size/2);
+    
+    // vertex(-this.size * 0.5, 1.1 * this.size)
+    // vertex(-this.size * 0.7, 1.6 * this.size)
+    // vertex(-this.size * 0.36, 1.3 * this.size);
+    // vertex(0, 2 * this.size);
+    
+    // vertex(-this.size/3, 2.4 * this.size);
+    // vertex(this.size/3, 2.4 * this.size);
+    
+    // vertex(0, 2 * this.size);
+    
+    // vertex(this.size * 0.36, 1.3 * this.size);
+    // vertex(this.size * 0.7, 1.6 * this.size)
+    // vertex(this.size * 0.5, 1.1 * this.size)
+    
+    // vertex(this.size/2, this.size/2);
+    
+    // vertex(this.size * 0.3,-this.size * 0.5);
+    // vertex(this.size * 0.25, -this.size * 0.6)
+    // vertex(0, -this.size);
+
+    // endShape(CLOSE);
+    // pop();
 	if (createVector(mouseX, mouseY).dist(this.position) < 50 || this.name.toLowerCase().includes(search.toLowerCase())){
 		text(this.name, this.position.x, this.position.y)
 	}

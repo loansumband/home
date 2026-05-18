@@ -88,8 +88,15 @@ a {
     margin:auto;
 }
 
+.events{
+    font-size: 5em;
+}
+
 #water{
-    background-image: url("images/water.jpg");
+    background-image: url("images/watersmall.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     width: 100%;
     height:100%;
 }

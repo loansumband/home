@@ -76,3 +76,46 @@ Array.from(document.getElementsByClassName("movable")).forEach(img => {
 	}
   
   });
+  async function loadGoogleDoc() {
+
+	const pubUrl =
+	  "https://docs.google.com/document/d/e/2PACX-1vQAVUO6JaJ1uQaLUFDXzOyivSkwG6Xido0OtQlRr79F3Btpn8keR-DBU5W-aDui-6f0lbd4JLmu4AdO/pub";
+  
+	// Use proxy to avoid CORS
+	const proxyUrl =
+	  "https://api.allorigins.win/raw?url=" +
+	  encodeURIComponent(pubUrl);
+  
+	try {
+  
+	  const response = await fetch(proxyUrl);
+  
+	  if (!response.ok) {
+		throw new Error("Failed to fetch doc");
+	  }
+  
+	  const html = await response.text();
+  
+	  // Parse HTML
+	  const parser = new DOMParser();
+	  const doc = parser.parseFromString(html, "text/html");
+  
+	  // Google published docs content
+	  const content =
+		doc.querySelector(".doc-content") ||
+		doc.body;
+  
+	  // Insert into page
+	  document.querySelector(".events").innerHTML =
+		content.innerHTML;
+  
+	} catch (err) {
+  
+	  console.error(err);
+  
+	  document.querySelector(".events").innerHTML =
+		"<p>Could not load events.</p>";
+	}
+  }
+  
+  loadGoogleDoc();
