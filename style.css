@@ -62,7 +62,7 @@ a {
 }
 
 .poster_board{
-    margin-top: 20em;
+    margin-top: 2em;
 }
 
 .posters{
@@ -110,5 +110,11 @@ img{
     #title>img{
         width:0.8em;
         margin:-0.2em;
+    }
+    h1{
+        font-size: 3rem;
+    }
+    .events{
+        font-size:3rem;
     }
 }
