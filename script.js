@@ -76,46 +76,82 @@ Array.from(document.getElementsByClassName("movable")).forEach(img => {
 	}
   
   });
-  async function loadGoogleDoc() {
 
-	const pubUrl =
-	  "https://docs.google.com/document/d/e/2PACX-1vQAVUO6JaJ1uQaLUFDXzOyivSkwG6Xido0OtQlRr79F3Btpn8keR-DBU5W-aDui-6f0lbd4JLmu4AdO/pub";
-  
-	// Use proxy to avoid CORS
-	const proxyUrl =
-	  "https://api.allorigins.win/raw?url=" +
-	  encodeURIComponent(pubUrl);
-  
-	try {
-  
-	  const response = await fetch(proxyUrl);
-  
-	  if (!response.ok) {
-		throw new Error("Failed to fetch doc");
-	  }
-  
-	  const html = await response.text();
-  
-	  // Parse HTML
-	  const parser = new DOMParser();
-	  const doc = parser.parseFromString(html, "text/html");
-  
-	  // Google published docs content
-	  const content =
-		doc.querySelector(".doc-content") ||
-		doc.body;
-  
-	  // Insert into page
-	  document.querySelector(".events").innerHTML =
-		content.innerHTML;
-  
-	} catch (err) {
-  
-	  console.error(err);
-  
-	  document.querySelector(".events").innerHTML =
-		"<p>Could not load events.</p>";
-	}
-  }
-  
-  loadGoogleDoc();
+// const pubUrl =
+//   "https://docs.google.com/document/d/e/2PACX-1vQAVUO6JaJ1uQaLUFDXzOyivSkwG6Xido0OtQlRr79F3Btpn8keR-DBU5W-aDui-6f0lbd4JLmu4AdO/pub";
+
+// const proxies = [
+//   url => "https://api.allorigins.win/raw?url=" + encodeURIComponent(url),
+//   url => "https://corsproxy.io/?" + encodeURIComponent(url)
+// ];
+
+// const eventsDiv = document.querySelector(".events");
+// const statusDiv = document.querySelector(".status");
+
+// let lastContent = "";
+// let isLoading = false;
+
+// async function fetchDoc() {
+
+//   // Prevent overlapping requests
+//   if (isLoading) return;
+
+//   isLoading = true;
+
+//   for (const proxy of proxies) {
+
+//     try {
+
+//       const response = await fetch(proxy(pubUrl), {
+//         cache: "no-store"
+//       });
+
+//       if (!response.ok) {
+//         throw new Error("Bad response");
+//       }
+
+//       const html = await response.text();
+
+//       const parser = new DOMParser();
+//       const doc = parser.parseFromString(html, "text/html");
+
+//       const content =
+//         doc.querySelector(".doc-content") ||
+//         doc.body;
+
+//       const newHtml = content.innerHTML;
+
+//       // Only update if changed
+//       if (newHtml !== lastContent) {
+
+//         eventsDiv.innerHTML = newHtml;
+//         lastContent = newHtml;
+
+//         console.log("Updated:", new Date().toLocaleTimeString());
+//       }
+
+//       statusDiv.textContent =
+//         "Last checked: " +
+//         new Date().toLocaleTimeString();
+
+//       isLoading = false;
+//       return;
+
+//     } catch (err) {
+
+//       console.warn("Proxy failed:", err);
+//     }
+//   }
+
+//   statusDiv.textContent =
+//     "Update failed: " +
+//     new Date().toLocaleTimeString();
+
+//   isLoading = false;
+// }
+
+// // Initial load
+// fetchDoc();
+
+// // Refresh every 2 seconds
+// setInterval(fetchDoc, 2000);
